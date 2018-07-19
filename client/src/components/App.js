@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
+import openSocket from "socket.io-client";
 
 class App extends Component {
 
   state = {
     test: []
   }
+
+  socket = openSocket('localhost:3001', {transports: ['websocket']});
 
   componentDidMount(){
     fetch('/api')
