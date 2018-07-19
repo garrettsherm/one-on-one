@@ -1,23 +1,36 @@
 import React, { Component } from 'react';
 import './App.css';
-import openSocket from "socket.io-client";
+import io from "socket.io-client";
 
 class App extends Component {
+
+
 
   state = {
     test: []
   }
 
-  socket = openSocket('localhost:3001', {transports: ['websocket']});
+  socket = io.connect();   
 
-  componentDidMount(){
-    fetch('/api')
-      .then(res => res.json())
-      .then(test => this.setState({ test }))
-      .catch(() => console.log('error fetching /api on mount'));
+
+  async componentDidMount(){
+    try {
+      const res = await fetch('/api');
+      const apiData = await res.json();
+      this.setState({test: apiData})
+    } catch(e) {
+      console.log(`Error fetching from /api: ${e}`);
+    }
+  }
+
+  handleClick = e => {
+    this.socket.emit('click test', 'test from client');
   }
 
   render() {
+
+    this.socket.on('test', sockData => this.setState({test: sockData}));
+
     return (
       <div className="App">
         <div className="container">
@@ -33,6 +46,7 @@ class App extends Component {
                   )
                 }
               </p>
+              <button onClick={this.handleClick}>Test Click</button>
             </div>
           </div>
         </div>
