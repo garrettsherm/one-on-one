@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import io from "socket.io-client";
+import { Link } from 'react-router-dom';
 
 class App extends Component {
 
@@ -47,6 +48,7 @@ class App extends Component {
                 }
               </p>
               <button onClick={this.handleClick}>Test Click</button>
+              <Link to="/fafa">Test</Link>
             </div>
           </div>
         </div>
