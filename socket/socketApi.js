@@ -6,15 +6,13 @@ let chatList = [];
 module.exports = io => {
 
 	io.on('connection', (socket) => {
+		
 		console.log('user connected');
-		socket.on('click test', (msg) => {
-			socket.emit('test', [{ test: 'socket click test worked'}]);
-		});
 
-		socket.on('searching for new game', () => {
-			console.log(`user ${socket.id} is looking for a chat`);
+		socket.on('searching for new game', (name) => {
+			console.log(`user ${socket.id}, ${name} is looking for a chat`);
 			socket.join('searching');
-			playerSearching.push(socket.id);
+			playerSearching.push({ name: name, id: socket.id });
 			io.in('searching').emit('update count', playerSearching.length);
 			if(playerSearching.length >= 2){
 				const chatID = crypto.randomBytes(16).toString('hex');
@@ -25,15 +23,19 @@ module.exports = io => {
 				};
 				console.log(newChat);
 				chatList.push(newChat);
-				io.sockets.connected[newChat.player1].join(chatID);
-				io.sockets.connected[newChat.player2].join(chatID);
+				io.sockets.connected[newChat.player1.id].join(chatID);
+				io.sockets.connected[newChat.player2.id].join(chatID);
 				io.in(chatID).emit('start chat', chatID);
-
 			}
 		});
 
-		socket.on('start test', () => {
-			socket.emit('test', [{ test: 'socket start test worked'}]);
+		socket.on('new message', (msg, room) => {
+			console.log(msg, room);
+			io.in(room).emit('new message received', msg);
+		});
+
+		socket.on('leaving chat', (room) => {
+			socket.leave(room);
 		});
 
 		socket.on('leaving search', () => {

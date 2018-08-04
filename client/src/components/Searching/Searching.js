@@ -3,21 +3,22 @@ import React, { Component } from 'react'
 class Searching extends Component {
 
 	state = {
-		count: 0,
-		test: 0
-	}
+		count: 0
+	};
 
 	componentDidMount(){
-		this._isMounted = true;
-		this.setState({test: this.state.test + 1})
-		this.props.socket.emit('searching for new game');
+		console.log(this.props.location.state.name);
+		this.props.socket.emit('searching for new game', this.props.location.state.name);
 
 		this.props.socket.on('update count', (count) => {
 			this.setState({count: count});
 		});
 
 		this.props.socket.on('start chat', (chatID) => {
-			this.props.history.push(`chat/${chatID}`);
+			this.props.history.push({
+				pathname: `chat/${chatID}`,
+				state: { name: this.props.location.state.name }
+			});
 		});
 	}
 
