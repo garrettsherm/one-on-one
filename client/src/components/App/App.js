@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
-import io from "socket.io-client";
 import { Link } from 'react-router-dom';
 
 class App extends Component {
-
-
 
   state = {
     test: []
   }
 
-  socket = io.connect();   
-
+  componentWillMount(){
+    this.props.socket.emit('start test');
+  }
 
   async componentDidMount(){
     try {
@@ -22,16 +20,16 @@ class App extends Component {
     } catch(e) {
       console.log(`Error fetching from /api: ${e}`);
     }
+
+    this.props.socket.on('test', sockData => this.setState({test: sockData}));
+
   }
 
   handleClick = e => {
-    this.socket.emit('click test', 'test from client');
+    this.props.socket.emit('click test', 'test from client');
   }
 
   render() {
-
-    this.socket.on('test', sockData => this.setState({test: sockData}));
-
     return (
       <div className="App">
         <div className="container">

@@ -1,0 +1,12 @@
+.new__msg {
+	bottom: 0px
+}
+
+.chat__section {
+	min-height: 300px;
+
+}
+
+.new__msg__input {
+	width:100%;
+}
