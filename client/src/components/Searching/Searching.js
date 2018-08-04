@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom';
+
 
 class Searching extends Component {
 
@@ -37,4 +39,4 @@ class Searching extends Component {
 	}
 }
 
-export default Searching;
+export default withRouter(Searching);

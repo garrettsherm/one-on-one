@@ -5,12 +5,16 @@ class Chat extends Component {
 
 	state = {
 		newMsg: '',
-		msgList: ['test']
+		msgList: [{name: this.props.location.state.name, msg: 'test'}],
+		myName: 'anon'
 	};
 
 	componentDidMount(){
-		this.props.socket.on('new message received', (msg) => {
-			const newMsgList = [...this.state.msgList, msg];
+
+		this.setState({ myName: this.props.location.state.name });
+
+		this.props.socket.on('new message received', (msg, name) => {
+			const newMsgList = [...this.state.msgList, { name: name, msg: msg }];
 			this.setState({msgList: newMsgList});
 		});
 	};
@@ -25,7 +29,11 @@ class Chat extends Component {
 	};
 
 	handleSendMsg = () => {
-		this.props.socket.emit('new message', this.state.newMsg, this.props.match.params.id);
+		this.props.socket.emit('new message', 
+			this.state.newMsg, 
+			this.props.match.params.id, 
+			this.state.myName
+		);
 		this.setState({newMsg: ''});
 	};
 
@@ -37,7 +45,7 @@ class Chat extends Component {
 						<h2>You are in chat: {this.props.match.params.id}</h2>
 						{
 							this.state.msgList.map( (msg, i) => 
-								<p key={`msgList${i}`}><span><strong>{i + 1}: </strong></span>{msg}</p>
+								<p key={`msgList${i}`}><span><strong>{i + 1} - {msg.name}: </strong></span>{msg.msg}</p>
 							)
 						}
 					</div>

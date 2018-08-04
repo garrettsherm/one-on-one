@@ -29,9 +29,9 @@ module.exports = io => {
 			}
 		});
 
-		socket.on('new message', (msg, room) => {
+		socket.on('new message', (msg, room, name) => {
 			console.log(msg, room);
-			io.in(room).emit('new message received', msg);
+			io.in(room).emit('new message received', msg, name);
 		});
 
 		socket.on('leaving chat', (room) => {
