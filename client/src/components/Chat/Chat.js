@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
 import './Chat.css';
+import _ from 'lodash';
+import get from 'lodash/get';
 
 class Chat extends Component {
 
 	state = {
 		newMsg: '',
-		msgList: [{name: this.props.location.state.name, msg: 'test'}],
+		msgList: [],
 		myName: 'anon'
 	};
 
 	componentDidMount(){
 
-		this.setState({ myName: this.props.location.state.name });
+		const testname = get(this.props, 'location.state.name', 'anon');
+
+		this.setState({ myName: testname });
 
 		this.props.socket.on('new message received', (msg, name) => {
 			const newMsgList = [...this.state.msgList, { name: name, msg: msg }];

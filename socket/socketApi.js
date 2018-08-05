@@ -21,7 +21,6 @@ module.exports = io => {
 					player2: playerSearching.pop(),
 					id: chatID
 				};
-				console.log(newChat);
 				chatList.push(newChat);
 				io.sockets.connected[newChat.player1.id].join(chatID);
 				io.sockets.connected[newChat.player2.id].join(chatID);
@@ -30,8 +29,9 @@ module.exports = io => {
 		});
 
 		socket.on('new message', (msg, room, name) => {
-			console.log(msg, room);
-			io.in(room).emit('new message received', msg, name);
+			if(io.sockets.adapter.sids[socket.id][room]){
+				io.in(room).emit('new message received', msg, name);
+			}
 		});
 
 		socket.on('leaving chat', (room) => {
@@ -44,8 +44,8 @@ module.exports = io => {
 			leaveSearch(io, socket);			
 		});
 
-		socket.on('disconnect', () => {
-			console.log('user disconnected');
+		socket.on('disconnect', (reason) => {
+			console.log(`user disconnected because ${reason}`);
 			socket.leave('searching');
 			leaveSearch(io, socket);
 		});

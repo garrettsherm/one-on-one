@@ -12,7 +12,7 @@ import Chat from '../Chat';
 
 class Router extends Component {
 
-	socket = io.connect();
+	socket = io.connect('http://localhost:3001');
 
 	render(){
 		return(

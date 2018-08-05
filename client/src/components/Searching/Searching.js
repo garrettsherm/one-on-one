@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom';
-
+import _ from 'lodash';
+import get from 'lodash/get'
 
 class Searching extends Component {
 
@@ -9,9 +10,8 @@ class Searching extends Component {
 	};
 
 	componentDidMount(){
-		console.log(this.props.location.state.name);
-		this.props.socket.emit('searching for new game', this.props.location.state.name);
-
+		const testname = get(this.props, 'location.state.name', 'anon');
+		this.props.socket.emit('searching for new game', testname);
 		this.props.socket.on('update count', (count) => {
 			this.setState({count: count});
 		});
@@ -19,7 +19,7 @@ class Searching extends Component {
 		this.props.socket.on('start chat', (chatID) => {
 			this.props.history.push({
 				pathname: `chat/${chatID}`,
-				state: { name: this.props.location.state.name }
+				state: { name: testname }
 			});
 		});
 	}
