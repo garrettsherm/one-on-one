@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './Chat.css';
-import _ from 'lodash';
 import get from 'lodash/get';
 
 class Chat extends Component {
