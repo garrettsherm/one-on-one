@@ -20,6 +20,12 @@ class Chat extends Component {
 			const newMsgList = [...this.state.msgList, { name: name, msg: msg }];
 			this.setState({msgList: newMsgList});
 		});
+
+		this.props.socket.on('not in room', () => {
+			this.props.history.push('/');
+		});
+
+		this.props.socket.emit('check in room', this.props.match.params.id);
 	};
 
 	componentWillUnmount(){

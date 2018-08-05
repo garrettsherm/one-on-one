@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const sanitizeHTML = require('sanitize-html');
 
 let playerSearching = [];
 let chatList = [];
@@ -10,9 +11,10 @@ module.exports = io => {
 		console.log('user connected');
 
 		socket.on('searching for new game', (name) => {
-			console.log(`user ${socket.id}, ${name} is looking for a chat`);
+			const sanName = sanitizeHTML(name);
+			console.log(`user ${socket.id}, ${sanName} is looking for a chat`);
 			socket.join('searching');
-			playerSearching.push({ name: name, id: socket.id });
+			playerSearching.push({ name: sanName, id: socket.id });
 			io.in('searching').emit('update count', playerSearching.length);
 			if(playerSearching.length >= 2){
 				const chatID = crypto.randomBytes(16).toString('hex');
@@ -29,13 +31,24 @@ module.exports = io => {
 		});
 
 		socket.on('new message', (msg, room, name) => {
-			if(io.sockets.adapter.sids[socket.id][room]){
-				io.in(room).emit('new message received', msg, name);
+			const sanMsg = sanitizeHTML(msg);
+			const sanRoom = sanitizeHTML(room);
+			const sanName = sanitizeHTML(name);
+			if(io.sockets.adapter.sids[socket.id][sanRoom]){
+				io.in(sanRoom).emit('new message received', sanMsg, sanName);
+			}
+		});
+
+		socket.on('check in room', (room) => {
+			const sanRoom = sanitizeHTML(room);
+			if(!(io.sockets.adapter.sids[socket.id][sanRoom])){
+				socket.emit('not in room');
 			}
 		});
 
 		socket.on('leaving chat', (room) => {
-			socket.leave(room);
+			const sanRoom = sanitizeHTML(room);
+			socket.leave(sanRoom);
 		});
 
 		socket.on('leaving search', () => {
@@ -45,7 +58,8 @@ module.exports = io => {
 		});
 
 		socket.on('disconnect', (reason) => {
-			console.log(`user disconnected because ${reason}`);
+			const sanReason = sanitizeHTML(reason);
+			console.log(`user disconnected because ${sanReason}`);
 			socket.leave('searching');
 			leaveSearch(io, socket);
 		});
