@@ -28,12 +28,20 @@ class Chat extends Component {
 			this.props.history.push('/');
 		});
 
+		this.props.socket.on('chat over', () => {
+			alert('Opponent has left');
+			this.props.history.push('/');
+		});
+
 		this.props.socket.emit('check in room', this.props.match.params.id);
 
 	};
 
 	componentWillUnmount(){
 		this.props.socket.off('new message received');
+		this.props.socket.off('not in room');
+		this.props.socket.off('chat over');
+
 		this.props.socket.emit('leaving chat', this.props.match.params.id);
 	};
 

@@ -11,8 +11,10 @@ const app = express();
 
 const server = require('http').Server(app);
 
+// connect socketio to server
 const io = require('socket.io')(server);
 
+// connect the js file container socket.io server side logic
 const socketApi = require('./socket/socketApi')(io);
 
 // view engine setup
