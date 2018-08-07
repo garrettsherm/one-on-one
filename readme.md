@@ -1,9 +1,10 @@
-## Express + create-react-app Starter Template
+## One on One chat using Express.js, React.js, and Socket.io
 
-Template to get developing quickly with react (client-side) and express (server-side).
+Real time one on one chat with other users using websockets.
 
-This project was started using the express generator with ejs as the template engine (See https://expressjs.com/en/starter/generator.html), and create-react-app (https://github.com/facebook/create-react-app).
+Using react to connect to a websocket server being run with express + socket.io.
 
+Created with Express + create-react-app starter template (https://github.com/garrettsherm/express-create-react-app-template)
 
 ## Installation for development
 
@@ -37,15 +38,11 @@ The express application by default serves the /client/build/folder from the reac
 
 Change NODE_ENV in variables.env from development to production.
 
+In the router component  (/client/src/components/Router/router.js) change the socket connection to the production address. 
+
 To build react for production cd into /client/ and run 'npm run build'. This will build a new optimized version in /client/build. 
 
 In root application directory run 'npm start' to start the express application serving the new production build. 
 
-NOTE: This is just a starter template, further changes are needed to make this template production ready. 
-
-## Inspired by
-
-Some of the setup for express was inspired by Wes Bos' Learn Node course (https://learnnode.com/).
-
-The use of create-react-app and express generator inspired by the blog post by Dave Ceddia (https://daveceddia.com/create-react-app-express-backend/).
+NOTE: This is just an example built from a starter template, further changes are needed to make this template production ready. 
 
