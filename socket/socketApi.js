@@ -49,9 +49,11 @@ module.exports = io => {
 					has(io.sockets.connected, `${newChat.player2.id}`))
 					{
 						console.log('creating game');
+						
 						// join the custom chat room
 						io.sockets.connected[newChat.player1.id].join(chatID);
 						io.sockets.connected[newChat.player2.id].join(chatID);
+						
 						// send chat room & opponent name to players
 						io.to(newChat.player1.id).emit('start chat', chatID, newChat.player2.name);
 						io.to(newChat.player2.id).emit('start chat', chatID, newChat.player1.name);
@@ -88,6 +90,8 @@ module.exports = io => {
 		socket.on('leaving chat', (room) => {
 			const sanRoom = sanitizeHTML(room);
 			socket.leave(sanRoom);
+
+			// edit chatList to reflect player left chat
 			leaveChat(io, socket);
 		});
 
@@ -95,6 +99,7 @@ module.exports = io => {
 		socket.on('leaving search', () => {
 			console.log('user left search');
 			socket.leave('searching');
+
 			// edit playerSearching to reflect player leaving search
 			leaveSearch(io, socket);			
 		});
@@ -105,8 +110,8 @@ module.exports = io => {
 			console.log(`user disconnected because ${sanReason}`);
 			socket.leave('searching');
 			
+			// edit chatList to reflect player left chat
 			leaveChat(io, socket);
-
 
 			// edit playerSearching to reflect player leaving search
 			leaveSearch(io, socket);
@@ -125,13 +130,17 @@ function leaveSearch(io, socket){
 	socket.to('searching').emit('update count', playerSearching.length);
 }
 
+// remove chat object from chatList when 1/2 players leave
 function leaveChat(io, socket) {
 	let sendRoom = ''
 	chatList = chatList.filter((chat) => {
+
+		// record chat room of chat object to be removed
 		if((chat.player1.id === socket.id) || (chat.player2.id === socket.id)){
 			sendRoom = chat.id;
 		}
 
+		// send chat over event to player left in chat
 		socket.to(sendRoom).emit('chat over');
 
 		return ((chat.player1.id !== socket.id) && (chat.player2.id !== socket.id));

@@ -1,20 +1,28 @@
+// Node modules
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
+// Page component for finding a chat
 class FindChat extends Component {
+
+
 
 	state = {
 		name: ''
 	};
 
+	// find a chat on click or form enter
 	handleFind = e => {
 		e.preventDefault();
+
+		//move to searching page, pass name entered
 		this.props.history.push({
 			pathname: '/searching',
 			state: { name: this.state.name }
 		});
 	};
 
+	// function to update name entered
 	handleNameChange = e => {
 		this.setState({name: e.target.value});
 	};
