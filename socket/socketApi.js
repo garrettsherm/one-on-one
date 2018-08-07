@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const sanitizeHTML = require('sanitize-html');
+const has = require('lodash/has');
 
 let playerSearching = [];
 let chatList = [];
@@ -16,6 +17,7 @@ module.exports = io => {
 			socket.join('searching');
 			playerSearching.push({ name: sanName, id: socket.id });
 			io.in('searching').emit('update count', playerSearching.length);
+
 			if(playerSearching.length >= 2){
 				const chatID = crypto.randomBytes(16).toString('hex');
 				const newChat = {
@@ -24,10 +26,16 @@ module.exports = io => {
 					id: chatID
 				};
 				chatList.push(newChat);
-				io.sockets.connected[newChat.player1.id].join(chatID);
-				io.sockets.connected[newChat.player2.id].join(chatID);
-				io.in(chatID).emit('start chat', chatID);
-			}
+				if(has(io.sockets.connected, `${newChat.player1.id}`) && 
+					has(io.sockets.connected, `${newChat.player2.id}`))
+					{
+						console.log('creating game');
+						io.sockets.connected[newChat.player1.id].join(chatID);
+						io.sockets.connected[newChat.player2.id].join(chatID);
+						io.to(newChat.player1.id).emit('start chat', chatID, newChat.player2.name);
+						io.to(newChat.player2.id).emit('start chat', chatID, newChat.player1.name);
+					};
+			};
 		});
 
 		socket.on('new message', (msg, room, name) => {

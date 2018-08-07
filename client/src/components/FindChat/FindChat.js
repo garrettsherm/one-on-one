@@ -8,11 +8,12 @@ class FindChat extends Component {
 	};
 
 	handleFind = e => {
+		e.preventDefault();
 		this.props.history.push({
 			pathname: '/searching',
 			state: { name: this.state.name }
 		});
-	}
+	};
 
 	handleNameChange = e => {
 		this.setState({name: e.target.value});
@@ -20,12 +21,21 @@ class FindChat extends Component {
 
 	render(){
 		return(
-			<div>
-				<h1>FindChat</h1>
-				<label>Enter Name</label>
-				<input type="text" onChange={this.handleNameChange} />
-				<br/>
-				<button onClick={this.handleFind}>Find Someone</button>
+			<div className="container">
+				<div className="row">
+					<div className="col-md-12 text-center">
+						<h1><strong>FindChat</strong></h1>
+					</div>
+					<div className="col-md-6 offset-md-3 text-center">
+						<form onSubmit={this.handleFind}>
+							<div class="form-group">
+								<label for="name">Enter Name</label>
+								<input className="form-control" type="text" onChange={this.handleNameChange} name="name"/>
+							</div>
+							<button className="btn btn-primary" onClick={this.handleFind}>Find Someone</button>
+						</form>
+					</div>
+				</div>
 			</div>
 		);
 	}

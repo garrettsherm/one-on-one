@@ -1,12 +1,21 @@
 .new__msg {
-	bottom: 0px
+	position: fixed!important;
+	bottom: 0;
+	max-width: 100%;
+	width: 100%;
+	padding: 10px 15%;
+	background-color: #333333;
+	color: #ffffff;
+	border: 1px solid #222222;
 }
 
 .chat__section {
-	min-height: 300px;
-
+	min-height: 100px!important;
+	background-color: #eeeeee;
+	border: 1px solid #dddddd;
+	margin-bottom: 180px;
 }
 
 .new__msg__input {
-	width:100%;
+	
 }

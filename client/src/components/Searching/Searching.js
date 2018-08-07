@@ -15,10 +15,10 @@ class Searching extends Component {
 			this.setState({count: count});
 		});
 
-		this.props.socket.on('start chat', (chatID) => {
+		this.props.socket.on('start chat', (chatID, oppName) => {
 			this.props.history.push({
 				pathname: `chat/${chatID}`,
-				state: { name: testname }
+				state: { name: testname, oppName: oppName }
 			});
 		});
 	}
@@ -33,7 +33,14 @@ class Searching extends Component {
 	render(){
 
 		return(
-			<div>{this.state.count}searching</div>
+			<div className="container">
+				<div className="row">
+					<div className="col-md-6 offset-md-3 text-center">
+						<h1><strong>Searching for a game</strong></h1>
+						<strong>{this.state.count}</strong> person searching for chat
+					</div>
+				</div>
+			</div>
 		);
 	}
 }
