@@ -2,9 +2,16 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom';
 import get from 'lodash/get'
+import PropTypes from 'prop-types';
 
 // page component for searching for a game
 class Searching extends Component {
+
+	static defaultProps = {
+		history: PropTypes.object.isRequired,
+		socket: PropTypes.object.isRequired,
+		location: PropTypes.object.isRequired
+	};
 
 	state = {
 		count: 0

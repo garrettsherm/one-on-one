@@ -1,12 +1,20 @@
 // Node Modules
 import React, { Component } from 'react'
 import get from 'lodash/get';
+import PropTypes from 'prop-types';
 
 // CSS
 import './Chat.css';
 
 // Page component for chat room page
 class Chat extends Component {
+
+	static propTypes = {
+		location: PropTypes.object.isRequired,
+		socket: PropTypes.object.isRequired,
+		history: PropTypes.object.isRequired,
+		match: PropTypes.object.isRequired
+	};
 
 	state = {
 		newMsg: '',

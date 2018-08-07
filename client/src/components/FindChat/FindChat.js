@@ -1,11 +1,14 @@
 // Node modules
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 // Page component for finding a chat
 class FindChat extends Component {
 
-
+	static propTypes = {
+		history: PropTypes.object.isRequired
+	};
 
 	state = {
 		name: ''
