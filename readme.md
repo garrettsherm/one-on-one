@@ -4,6 +4,8 @@ Real time one on one chat with other users using websockets.
 
 Using react to connect to a websocket server being run with express + socket.io.
 
+See demo here (https://one-one-one-garrettsherm.herokuapp.com/).
+
 Created with Express + create-react-app starter template (https://github.com/garrettsherm/express-create-react-app-template)
 
 ## Installation for development
