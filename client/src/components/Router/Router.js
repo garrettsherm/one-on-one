@@ -12,7 +12,7 @@ import Chat from '../Chat';
 class Router extends Component {
 
 	// connect to socket io server
-	socket = io.connect(process.env.NODE_ENV === "development" ? "http://localhost:3001" : "https://one-one-one-garrettsherm.herokuapp.com/");
+	socket = io.connect(process.env.NODE_ENV === "development" ? "http://localhost:3001" : "https://one-on-one-garrettsherm.herokuapp.com/");
 
 	// React Router v4 using BrowserRouter
 	render(){
