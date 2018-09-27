@@ -39,8 +39,8 @@ class FindChat extends Component {
 					</div>
 					<div className="col-md-6 offset-md-3 text-center">
 						<form onSubmit={this.handleFind}>
-							<div class="form-group">
-								<label for="name">Enter Name</label>
+							<div className="form-group">
+								<label>Enter Name</label>
 								<input className="form-control" type="text" onChange={this.handleNameChange} name="name"/>
 							</div>
 							<button className="btn btn-primary" onClick={this.handleFind}>Find Someone</button>
