@@ -19,8 +19,6 @@ module.exports = io => {
 		socket.on('searching for new game', (name) => {
 			const sanName = sanitizeHTML(name);
 			console.log(`user ${socket.id}, ${sanName} is looking for a chat`);
-			console.log(playerSearching);
-			console.log(chatList);
 
 			// join the search room
 			socket.join('searching');
@@ -131,8 +129,6 @@ function leaveSearch(io, socket){
 	playerSearching = playerSearching.filter((player) => {
 		return player.id !== socket.id
 	});
-
-			console.log(playerSearching);
 
 	// update count to users searching for game
 	socket.to('searching').emit('update count', playerSearching.length);

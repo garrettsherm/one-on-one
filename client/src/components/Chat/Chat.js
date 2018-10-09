@@ -38,10 +38,9 @@ class Chat extends Component {
 		// on new message received socket event, update state
 		this.props.socket.on('new message received', (msg, name) => {
 			const newMsgList = [...this.state.msgList, { name: name, msg: msg, me: false }];
-			this.setState({msgList: newMsgList});
-
-			// scroll to bottom of page for readability
-			window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+			this.setState({msgList: newMsgList}, () => {
+				window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+			});
 		});
 
 		// on not in room event, go back to home page
@@ -90,8 +89,9 @@ class Chat extends Component {
 		);
 
 		const newMsgList = [...this.state.msgList, { name: this.state.myName, msg: this.state.newMsg, me: true }];
-		this.setState({msgList: newMsgList});
-		window.scrollTo(0, document.body.scrollHeight);
+		this.setState({msgList: newMsgList}, () => {
+			window.scrollTo(0, document.body.scrollHeight);
+		});
 
 
 		// reset textarea to blank
