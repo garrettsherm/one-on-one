@@ -11,12 +11,14 @@ class FindChat extends Component {
 	};
 
 	state = {
-		name: ''
+		name: localStorage.getItem("name") || ''
 	};
 
 	// find a chat on click or form enter
 	handleFind = e => {
 		e.preventDefault();
+
+		localStorage.setItem("name", this.state.name);
 
 		//move to searching page, pass name entered
 		this.props.history.push({
@@ -41,7 +43,7 @@ class FindChat extends Component {
 						<form onSubmit={this.handleFind}>
 							<div className="form-group">
 								<label>Enter Name</label>
-								<input className="form-control" type="text" onChange={this.handleNameChange} name="name"/>
+								<input className="form-control" type="text" onChange={this.handleNameChange} name="name" value={this.state.name} />
 							</div>
 							<button className="btn btn-primary" onClick={this.handleFind}>Find Someone</button>
 						</form>

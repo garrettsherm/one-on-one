@@ -3,6 +3,9 @@ import React, { Component } from 'react'
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 
+// Components
+import ChatBubble from './ChatBubble/ChatBubble';
+
 // CSS
 import './Chat.css';
 
@@ -34,7 +37,7 @@ class Chat extends Component {
 
 		// on new message received socket event, update state
 		this.props.socket.on('new message received', (msg, name) => {
-			const newMsgList = [...this.state.msgList, { name: name, msg: msg }];
+			const newMsgList = [...this.state.msgList, { name: name, msg: msg, me: false }];
 			this.setState({msgList: newMsgList});
 
 			// scroll to bottom of page for readability
@@ -76,11 +79,21 @@ class Chat extends Component {
 
 	// on send message, send message to server
 	handleSendMsg = () => {
+		if(this.state.newMsg.length < 1) {
+			alert('cannot have empty message'); 
+			return;
+	}
 		this.props.socket.emit('new message', 
 			this.state.newMsg, 
 			this.props.match.params.id, 
 			this.state.myName
 		);
+
+		const newMsgList = [...this.state.msgList, { name: this.state.myName, msg: this.state.newMsg, me: true }];
+		this.setState({msgList: newMsgList});
+		window.scrollTo(0, document.body.scrollHeight);
+
+
 		// reset textarea to blank
 		this.setState({newMsg: ''});
 	};
@@ -88,27 +101,27 @@ class Chat extends Component {
 	render(){
 		return(
 			<div>
-			<div className="container">
-				<div className="row">
-					<div className="col-md-12 text-center">
-						<h1><strong>One on One Chat</strong></h1>
-						<p>You are in chat with: <strong>{this.state.oppName}</strong></p>
-					</div>
-					<div className="chat__section col-md-8 offset-md-2">
-						{
-							this.state.msgList.map( (msg, i) => 
-								<p key={`msgList${i}`}><span><strong>{msg.name}: </strong></span>{msg.msg}</p>
-							)
-						}
+				<div className="container">
+					<div className="row">
+						<div className="col-md-12 text-center">
+							<h1><strong>One on One Chat</strong></h1>
+							<p><strong>You are in chat with:</strong> {this.state.oppName}</p>
+						</div>
+						<div className="chat__section col-md-8 offset-md-2">
+							{
+								this.state.msgList.map( (msg, i) => 
+									<ChatBubble name={msg.name} message={msg.msg} me={msg.me} />
+								)
+							}
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="new__msg text-center">
-				<div className="form-group">
-					<textarea rows="2" onChange={this.handleMsgChange} className="new__msg__input form-control" name="newMsg" value={this.state.newMsg} />
+				<div className="new__msg text-center">
+					<button onClick={this.handleSendMsg} className="btn btn-primary">Send Message</button>
+					<div className="form-group">
+						<input type="text" rows="2" onChange={this.handleMsgChange} className="new__msg__input form-control" name="newMsg" value={this.state.newMsg} />
+					</div>
 				</div>
-				<button onClick={this.handleSendMsg} className="btn btn-primary">Send Message</button>
-			</div>
 			</div>
 		);
 	}

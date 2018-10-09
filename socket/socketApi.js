@@ -19,6 +19,8 @@ module.exports = io => {
 		socket.on('searching for new game', (name) => {
 			const sanName = sanitizeHTML(name);
 			console.log(`user ${socket.id}, ${sanName} is looking for a chat`);
+			console.log(playerSearching);
+			console.log(chatList);
 
 			// join the search room
 			socket.join('searching');
@@ -73,12 +75,13 @@ module.exports = io => {
 			// check if user is in room, cannot send if not in room
 			if(io.sockets.adapter.sids[socket.id][sanRoom]){
 				// in chat room, send message to users in room
-				io.in(sanRoom).emit('new message received', sanMsg, sanName);
+				socket.to(sanRoom).emit('new message received', sanMsg, sanName);
 			}
 		});
 		
 		//check if user is in not in room
 		socket.on('check in room', (room) => {
+			console.log('checking in room');
 			const sanRoom = sanitizeHTML(room);
 			if(!(io.sockets.adapter.sids[socket.id][sanRoom])){
 				// not in room, emit such to player
@@ -88,6 +91,7 @@ module.exports = io => {
 
 		// leaving chat, leave the socket room
 		socket.on('leaving chat', (room) => {
+			console.log("user leaving chat");
 			const sanRoom = sanitizeHTML(room);
 			socket.leave(sanRoom);
 
@@ -98,6 +102,7 @@ module.exports = io => {
 		// leaving search, leave socket room
 		socket.on('leaving search', () => {
 			console.log('user left search');
+
 			socket.leave('searching');
 
 			// edit playerSearching to reflect player leaving search
@@ -122,9 +127,12 @@ module.exports = io => {
 
 // remove player who left search from playerSearching
 function leaveSearch(io, socket){
+
 	playerSearching = playerSearching.filter((player) => {
-		return player !== socket.id
+		return player.id !== socket.id
 	});
+
+			console.log(playerSearching);
 
 	// update count to users searching for game
 	socket.to('searching').emit('update count', playerSearching.length);
