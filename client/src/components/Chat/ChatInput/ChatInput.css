@@ -1,0 +1,20 @@
+.new__msg__container {
+	width: 100%;
+	max-width: 900px;
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+.new__msg__container .form-group {
+	margin-right: 10px;
+	flex-grow: 1;
+	margin-bottom: 0px;
+}
+
+.new__msg__container .form-group input {
+	height: 40px;
+}
+
+.new__msg__container button {
+	height: 40px;
+}
