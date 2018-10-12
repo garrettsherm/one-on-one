@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 // Components
 import ChatBubble from './ChatBubble/ChatBubble';
+import ChatInput from './ChatInput/ChatInput';
 
 // CSS
 import './Chat.css';
@@ -71,24 +72,19 @@ class Chat extends Component {
 		this.props.socket.emit('leaving chat', this.props.match.params.id);
 	};
 
-	// on changing textarea, update newMsg in state
-	handleMsgChange = (e) => {
-		this.setState({newMsg: e.target.value});
-	};
-
 	// on send message, send message to server
-	handleSendMsg = () => {
-		if(this.state.newMsg.length < 1) {
+	handleSendMsg = message => {
+		if(message.length < 1) {
 			alert('cannot have empty message'); 
 			return;
-	}
+		}
 		this.props.socket.emit('new message', 
-			this.state.newMsg, 
+			message, 
 			this.props.match.params.id, 
 			this.state.myName
 		);
 
-		const newMsgList = [...this.state.msgList, { name: this.state.myName, msg: this.state.newMsg, me: true }];
+		const newMsgList = [...this.state.msgList, { name: this.state.myName, msg: message, me: true }];
 		this.setState({msgList: newMsgList}, () => {
 			window.scrollTo(0, document.body.scrollHeight);
 		});
@@ -99,6 +95,11 @@ class Chat extends Component {
 	};
 
 	render(){
+
+		const chatBubbles = this.state.msgList.map( (msg, i) => 
+			<ChatBubble key={`chat-bubble-${i}`} name={msg.name} message={msg.msg} me={msg.me} />
+		);
+
 		return(
 			<div>
 				<div className="container">
@@ -108,19 +109,12 @@ class Chat extends Component {
 							<p><strong>You are in chat with:</strong> {this.state.oppName}</p>
 						</div>
 						<div className="chat__section col-md-8 offset-md-2">
-							{
-								this.state.msgList.map( (msg, i) => 
-									<ChatBubble name={msg.name} message={msg.msg} me={msg.me} />
-								)
-							}
+							{ chatBubbles }
 						</div>
 					</div>
 				</div>
-				<div className="new__msg text-center">
-					<button onClick={this.handleSendMsg} className="btn btn-primary">Send Message</button>
-					<div className="form-group">
-						<input type="text" rows="2" onChange={this.handleMsgChange} className="new__msg__input form-control" name="newMsg" value={this.state.newMsg} />
-					</div>
+				<div className="new__msg">
+					<ChatInput handleSendMsg={this.handleSendMsg} />
 				</div>
 			</div>
 		);

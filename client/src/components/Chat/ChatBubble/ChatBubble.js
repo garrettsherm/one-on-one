@@ -5,7 +5,7 @@ import './ChatBubble.css';
 
 class ChatBubble extends Component {
 
-	static PropTypes = {
+	static propTypes = {
 		name: PropTypes.string.isRequired,
 		message: PropTypes.string.isRequired,
 		me: PropTypes.bool
