@@ -1,18 +1,27 @@
-// Node Modules
+/* src/pages/Chat/Chat.js */
+
+/** Node Modules */
 import React, { Component } from 'react'
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 
-// Components
-import ChatBubble from './ChatBubble/ChatBubble';
-import ChatInput from './ChatInput/ChatInput';
+/** Components */
+/*** Chat Components */
+import ChatBubble from '../../components/Chat/ChatBubble/ChatBubble';
+import ChatInput from '../../components/Chat/ChatInput/ChatInput';
 
-// CSS
+/** CSS */
 import './Chat.css';
 
-// Page component for chat room page
+/**
+ * @name Chat
+ * @class
+ * @extends Component
+ * @description		Page component for one-on-one Chat 		
+*/
 class Chat extends Component {
 
+	/** PropTypes */
 	static propTypes = {
 		location: PropTypes.object.isRequired,
 		socket: PropTypes.object.isRequired,
@@ -20,13 +29,16 @@ class Chat extends Component {
 		match: PropTypes.object.isRequired
 	};
 
+	/** Default state */
 	state = {
-		newMsg: '',
 		msgList: [],
 		myName: 'anon',
 		oppName: 'anon'
 	};
 
+	/**
+	 *
+	*/
 	componentDidMount(){
 		// make sure user name and opponent name exist before using them
 		// default to anon

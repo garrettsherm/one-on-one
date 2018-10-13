@@ -1,15 +1,17 @@
-// node modules
+/* src/index.js */
+
+/** Node Modules */
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// React components
-import Router from './components/Router';
+/** Components */
+import Router from './router/Router';
 
-// bootstrap dependencies
+/*** Bootstrap */
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// base css
-import './index.css';
+/** App css */
+import './css/default.css';
 
 ReactDOM.render(<Router />, document.getElementById('root'));
