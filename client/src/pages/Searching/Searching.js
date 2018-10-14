@@ -1,45 +1,64 @@
-// Node modules
+/* src/pages/Searching/Searching.js */
+
+/** Node modules */
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import get from 'lodash/get'
-import PropTypes from 'prop-types';
 
-// page component for searching for a game
+/** Components */
+/** Searching Components */
+import SearchingApp from '../../components/Searching/SearchingApp/SearchingApp';
+
+/**
+ * @name Searching
+ * @class
+ * @extends Component
+ * @description 	Logic component for Searching Page, all calls to server for searching page made here
+*/
 class Searching extends Component {
 
+	/** PropTypes */
 	static defaultProps = {
 		history: PropTypes.object.isRequired,
 		socket: PropTypes.object.isRequired,
 		location: PropTypes.object.isRequired
 	};
 
+	/** Default State */
 	state = {
 		count: 0
 	};
 
+	/** React lifecycle Method - Component Did Mount */
 	componentDidMount(){
+
 		// make sure name was passed before using it
 		// default to anon
 		const testname = get(this.props, 'location.state.name', 'anon');
 
-		// on update count event, update state
+		/** On Socket Events for page */
+
+		// on update count socket event, update state
 		this.props.socket.on('update count', (count) => {
 			this.setState({count: count});
 		});
 
-		// on start chat event, move to chat page
+		// on start chat socket event, move to chat page
 		this.props.socket.on('start chat', (chatID, oppName) => {
-			// pass user name and opponent name
+			// move to chat page
+			// pass user name and opponent name to next router page
 			this.props.history.push({
 				pathname: `chat/${chatID}`,
 				state: { name: testname, oppName: oppName }
 			});
 		});
 
-		// send searching for new game event to websocket server
+		// send searching for new game event to websocket server, pass user name
 		this.props.socket.emit('searching for new game', testname);
 	}
 
+	/** React lifecycle Method - Component Will Unmount */
 	componentWillUnmount(){
 		// remove socket events for component to prevent memory leaks
 		this.props.socket.off('update count');
@@ -50,16 +69,7 @@ class Searching extends Component {
 	}
 
 	render(){
-		return(
-			<div className="container">
-				<div className="row">
-					<div className="col-md-6 offset-md-3 text-center">
-						<h1><strong>Searching for a game</strong></h1>
-						<p><strong>{this.state.count}</strong> person searching for chat</p>
-					</div>
-				</div>
-			</div>
-		);
+		return(<SearchingApp count={this.state.count} />);
 	}
 }
 

@@ -1,56 +1,70 @@
-// Node modules
+/* src/pages/FindChat/FindChat.js */
+
+/** Node modules */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-// Page component for finding a chat
+/** Components */
+/*** FindChat Components */
+import FindChatApp from '../../components/FindChat/FindChatApp/FindChatApp';
+
+/**
+ * @name FindChat
+ * @class
+ * @extends Component
+ * @description 	Logic component for FindChat Page, all calls to server for findchat page made here
+*/
 class FindChat extends Component {
 
+	/** PropTypes */
 	static propTypes = {
 		history: PropTypes.object.isRequired
 	};
 
+	/** Default State */
 	state = {
 		name: localStorage.getItem("name") || ''
 	};
 
-	// find a chat on click or form enter
+	/*
+	 * @name handleFind
+	 * @function
+	 * @description		Send request to server that want to find game
+	*/	
 	handleFind = e => {
+
 		e.preventDefault();
 
+		// Remember name put in for next time
 		localStorage.setItem("name", this.state.name);
 
-		//move to searching page, pass name entered
+		//move to Searching page, pass name entered
 		this.props.history.push({
 			pathname: '/searching',
 			state: { name: this.state.name }
 		});
 	};
 
-	// function to update name entered
+	/*
+	 * @name handleNameChange
+	 * @function
+	 * @description		Record name to state as entered
+	*/	
 	handleNameChange = e => {
 		this.setState({name: e.target.value});
 	};
 
 	render(){
-		return(
-			<div className="container">
-				<div className="row">
-					<div className="col-md-12 text-center">
-						<h1><strong>FindChat</strong></h1>
-					</div>
-					<div className="col-md-6 offset-md-3 text-center">
-						<form onSubmit={this.handleFind}>
-							<div className="form-group">
-								<label>Enter Name</label>
-								<input className="form-control" type="text" onChange={this.handleNameChange} name="name" value={this.state.name} />
-							</div>
-							<button className="btn btn-primary" onClick={this.handleFind}>Find Someone</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		);
+		
+		// Props for findChatApp
+		const findChatAppProps = {
+			handleFind: this.handleFind,
+			handleNameChange: this.handleNameChange,
+			name: this.state.name
+		}
+
+		return(<FindChatApp {...findChatAppProps} />);
 	}
 }
 
