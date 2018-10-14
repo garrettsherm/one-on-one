@@ -4,9 +4,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/** CSS */
+import './FindChatInput.css';
+
 /** Main Presentational component for FindChat Page*/
 const FindChatInput = ({handleFind, handleNameChange, name}) => (
-	<form onSubmit={ e => handleFind(e) }>
+	<form onSubmit={ e => handleFind(e) } className='find-chat-input-form'>
 		<div className="form-group">
 			<label>Enter Name</label>
 			<input className="form-control" type="text" onChange={ e => handleNameChange(e) } name="name" value={name} />

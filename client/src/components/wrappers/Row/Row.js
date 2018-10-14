@@ -1,4 +1,4 @@
-/* src/components/commons/Row/Row.js */
+/* src/components/wrappers/Row/Row.js */
 
 /* Requires Bootstrap */
 

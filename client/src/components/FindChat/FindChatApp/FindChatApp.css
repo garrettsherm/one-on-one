@@ -1,0 +1,10 @@
+.find-chat-container {
+	min-height: 100vh;
+	background: linear-gradient(to bottom, #a90329, #8f0222);
+}
+
+.find-chat-input-container {
+	display: flex;
+	align-content: center;
+	justify-content: center;
+}

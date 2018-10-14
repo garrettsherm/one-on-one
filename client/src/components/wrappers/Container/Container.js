@@ -1,4 +1,4 @@
-/* src/components/commons/Container/Container.js */
+/* src/components/wrappers/Container/Container.js */
 
 /* Requires Bootstrap */
 

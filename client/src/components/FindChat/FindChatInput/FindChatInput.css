@@ -1,0 +1,17 @@
+.find-chat-input-form {
+	max-width: 300px;
+}
+
+.find-chat-input-form label {
+	color: #ffffff;
+}
+
+.find-chat-input-form input[type="text"] {
+	text-align: center;
+}
+
+.find-chat-input-form button {
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 14px;
+}
