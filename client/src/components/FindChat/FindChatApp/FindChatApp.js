@@ -4,24 +4,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/** Components */
+/*** wrappers Components */
+import Container from '../../wrappers/Container/Container';
+import Row from '../../wrappers/Row/Row';
+/*** commons Components */
+import TitleText from '../../commons/TitleText/TitleText';
+/*** FindChat Components */
+import FindChatInput from '../FindChatInput/FindChatInput';
+
 /** Main Presentational component for FindChat Page*/
 const FindChatApp = ({handleFind, handleNameChange, name}) => (
-	<div className="container">
-		<div className="row">
-			<div className="col-md-12 text-center">
-				<h1><strong>FindChat</strong></h1>
-			</div>
+	<Container>
+		<Row>
+			<TitleText titleText="Find Chat" center={true} />
 			<div className="col-md-6 offset-md-3 text-center">
-				<form onSubmit={ e => handleFind(e) }>
-					<div className="form-group">
-						<label>Enter Name</label>
-						<input className="form-control" type="text" onChange={ e => handleNameChange(e) } name="name" value={name} />
-					</div>
-					<button className="btn btn-primary" onClick={ e => handleFind(e) }>Find Someone</button>
-				</form>
+				<FindChatInput handleFind={handleFind} handleNameChange={handleNameChange} name={name} />
 			</div>
-		</div>
-	</div>
+		</Row>
+	</Container>
 );
 
 /** PropTypes */
