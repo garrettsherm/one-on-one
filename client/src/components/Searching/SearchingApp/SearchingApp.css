@@ -1,0 +1,13 @@
+.searching-container {
+	min-height: 100vh;
+	background: linear-gradient(to bottom, #4f85bb, #2c539e);
+}
+
+.searching-container__info {
+	color: #ffffff;
+}
+
+.searching-container__info__hint {
+	margin-top: 10px;
+	font-size: 12px;
+}
