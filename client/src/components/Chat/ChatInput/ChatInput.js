@@ -24,8 +24,8 @@ const ChatInput = ({handleSendMsg, handleMsgChange, msgValue}) => {
 	};
 
 	return(
-		<form onSubmit={ (e) => this.props.handleSendMsg(e) } className='new__msg__container'>
-			<MainButton onClick={ (e) => this.props.handleSendMsg(e) } buttonText="Send Message" />
+		<form onSubmit={ (e) => { e.preventDefault(); handleSendMsg(e);} } className='new__msg__container'>
+			<MainButton onClick={ (e) => { e.preventDefault(); handleSendMsg(e);}} buttonText="Send Message" />
 			<div className="form-group">
 				<input {...inputProps} />
 			</div>

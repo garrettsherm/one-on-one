@@ -2,6 +2,8 @@ const crypto = require('crypto');
 const sanitizeHTML = require('sanitize-html');
 const has = require('lodash/has');
 
+const socketController = require('./socketController');
+
 // List of players searching for a chat
 let playerSearching = [];
 
@@ -36,8 +38,8 @@ module.exports = io => {
 				const chatID = crypto.randomBytes(16).toString('hex');
 
 				const newChat = {
-					player1: playerSearching.pop(),
-					player2: playerSearching.pop(),
+					player1: playerSearching.shift(),
+					player2: playerSearching.shift(),
 					id: chatID
 				};
 
@@ -94,7 +96,7 @@ module.exports = io => {
 			socket.leave(sanRoom);
 
 			// edit chatList to reflect player left chat
-			leaveChat(io, socket);
+			chatList = socketController.leaveChat(io, socket, chatList);
 		});
 
 		// leaving search, leave socket room
@@ -104,7 +106,7 @@ module.exports = io => {
 			socket.leave('searching');
 
 			// edit playerSearching to reflect player leaving search
-			leaveSearch(io, socket);			
+			playerSearching = socketController.leaveSearch(io, socket, playerSearching);			
 		});
 
 		// user socket disconnected, leave searching room
@@ -114,42 +116,11 @@ module.exports = io => {
 			socket.leave('searching');
 			
 			// edit chatList to reflect player left chat
-			leaveChat(io, socket);
+			chatList = socketController.leaveChat(io, socket, chatList);
 
 			// edit playerSearching to reflect player leaving search
-			leaveSearch(io, socket);
+			playerSearching = socketController.leaveSearch(io, socket, playerSearching);
 
 		});
 	});
-}
-
-// remove player who left search from playerSearching
-function leaveSearch(io, socket){
-
-	playerSearching = playerSearching.filter((player) => {
-		return player.id !== socket.id
-	});
-
-	// update count to users searching for game
-	socket.to('searching').emit('update count', playerSearching.length);
-}
-
-// remove chat object from chatList when 1/2 players leave
-function leaveChat(io, socket) {
-	let sendRoom = ''
-	chatList = chatList.filter((chat) => {
-
-		// record chat room of chat object to be removed
-		if((chat.player1.id === socket.id) || (chat.player2.id === socket.id)){
-			sendRoom = chat.id;
-		}
-
-		// send chat over event to player left in chat
-		socket.to(sendRoom).emit('chat over');
-
-		return ((chat.player1.id !== socket.id) && (chat.player2.id !== socket.id));
-	});
-
-	console.log(`Size of chatList: ${chatList.length}`);
-
 }
