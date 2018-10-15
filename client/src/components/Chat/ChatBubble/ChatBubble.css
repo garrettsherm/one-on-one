@@ -21,6 +21,7 @@
 .message--me .chat-bubble__message {
 	background-color: #f0f0f0;
 	max-width: 350px;
+	margin-left: auto;
 }
 
 .message--me .chat-bubble__message p {
@@ -50,6 +51,8 @@
 .message--me .chat-bubble-flex {
 	display: flex;
 	justify-content: right;
+	align-content: right;
+	align-items: right;
 }
 
 .message--not-me .chat-bubble-flex {
