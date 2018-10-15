@@ -4,6 +4,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/** Components */
+/*** buttons Components */
+import MainButton from '../../buttons/MainButton/MainButton';
+
 /** CSS */
 import './FindChatInput.css';
 
@@ -14,7 +18,7 @@ const FindChatInput = ({handleFind, handleNameChange, name}) => (
 			<label>Enter Name</label>
 			<input className="form-control" type="text" onChange={ e => handleNameChange(e) } name="name" value={name} />
 		</div>
-		<button className="btn btn-primary" onClick={ e => handleFind(e) }>Find Someone</button>
+		<MainButton onClick={ e => handleFind(e) } buttonText="Find Someone" />
 	</form>
 );
 

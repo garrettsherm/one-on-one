@@ -1,3 +1,8 @@
+.chat-container {
+	min-height: 100vh;
+	background: linear-gradient(to bottom, #398235, #299a0b);
+}
+
 .new__msg {
 	position: fixed!important;
 	bottom: 0;
@@ -12,5 +17,14 @@
 
 
 .chat__section {
-	margin-bottom: 70px;
+	margin-bottom: 80px;
+}
+
+.chat-with-text {
+	font-size: 12px;
+	color: #ffffff;
+}
+
+.chat-with-opp {
+	color: #111111;
 }

@@ -27,6 +27,7 @@ class Chat extends Component {
 
 	/** Default state */
 	state = {
+		newMsg: '',
 		msgList: [],
 		myName: 'anon',
 		oppName: 'anon'
@@ -82,27 +83,35 @@ class Chat extends Component {
 	};
 
 	// on send message, send message to server
-	handleSendMsg = message => {
+	handleSendMsg = (e) => {
+
+		e.preventDefault();
 
 		// cannot send empty message
-		if(message.length < 1) {
+		if(this.state.newMsg.length < 1) {
 			alert('cannot have empty message'); 
 			return;
 		}
 
 		// send new message socket event to server, pass message, room id, and user name
 		this.props.socket.emit('new message', 
-			message, 
+			this.state.newMsg, 
 			this.props.match.params.id, 
 			this.state.myName
 		);
 
 		// update state to have include new message
-		const newMsgList = [...this.state.msgList, { name: this.state.myName, msg: message, me: true }];
-		this.setState({msgList: newMsgList}, () => {
+		const newMsgList = [...this.state.msgList, { name: this.state.myName, msg: this.state.newMsg, me: true }];
+		this.setState({msgList: newMsgList, newMsg: ''}, () => {
 			// after state update scroll to botom of page
 			window.scrollTo(0, document.body.scrollHeight);
 		});
+
+
+	};
+
+	handleMsgChange= e => {
+		this.setState({newMsg: e.target.value});		
 	};
 
 	render(){
@@ -110,7 +119,9 @@ class Chat extends Component {
 		const chatAppProps = {
 			msgList: this.state.msgList,
 			oppName: this.state.oppName,
-			handleSendMsg: this.handleSendMsg
+			handleSendMsg: this.handleSendMsg,
+			handleMsgChange: this.handleMsgChange,
+			msgValue: this.state.newMsg
 		};
 
 		return(<ChatApp {...chatAppProps} />);

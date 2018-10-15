@@ -1,0 +1,4 @@
+.not-found-container {
+	min-height: 100vh;
+	background: linear-gradient(to bottom, #398, #299);
+}

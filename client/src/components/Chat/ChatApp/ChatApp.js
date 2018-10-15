@@ -5,6 +5,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /** Components */
+/*** wrappers Components */
+import Container from '../../wrappers/Container/Container';
+import Row from '../../wrappers/Row/Row';
+/*** commons Components */
+import TitleText from '../../commons/TitleText/TitleText';
 /*** Chat Components */
 import ChatBubble from '../ChatBubble/ChatBubble';
 import ChatInput from '../ChatInput/ChatInput';
@@ -13,28 +18,33 @@ import ChatInput from '../ChatInput/ChatInput';
 import './ChatApp.css';
 
 /** Main Presentational component for Chat/:chatid Page*/
-const SearchingApp = ({msgList, oppName, handleSendMsg}) => {
+const SearchingApp = ({msgList, oppName, msgValue, handleSendMsg, handleMsgChange}) => {
 
+	// Get chat messages to display
 	const chatBubbles = msgList.map( (msg, i) => 
 		<ChatBubble key={`chat-bubble-${i}`} name={msg.name} message={msg.msg} me={msg.me} />
 	);
 
 	return(
-		<div>
-			<div className="container">
-				<div className="row">
+		<div className="chat-container">
+
+			<Container>
+				<Row>
+					<TitleText titleText="One-on-One Chat" center={true} styles={{color: '#ffffff'}} />
 					<div className="col-md-12 text-center">
-						<h1><strong>One on One Chat</strong></h1>
-						<p><strong>You are in chat with:</strong> {oppName}</p>
+						<p className="chat-with-text"><i>You are in chat with:</i></p>
+						<p className="chat-with-opp"><b>{oppName}</b></p>
 					</div>
 					<div className="chat__section col-md-8 offset-md-2">
 						{ chatBubbles }
 					</div>
-				</div>
-			</div>
+				</Row>
+			</Container>
+
 			<div className="new__msg">
-				<ChatInput handleSendMsg={handleSendMsg} />
+				<ChatInput handleSendMsg={handleSendMsg} handleMsgChange={handleMsgChange} msgValue={msgValue} />
 			</div>
+
 		</div>
 	);
 };
@@ -43,7 +53,9 @@ const SearchingApp = ({msgList, oppName, handleSendMsg}) => {
 SearchingApp.propTypes = {
 	msgList: PropTypes.array.isRequired,
 	oppName: PropTypes.string.isRequired,
-	handleSendMsg: PropTypes.func.isRequired
+	msgValue: PropTypes.string.isRequired,
+	handleSendMsg: PropTypes.func.isRequired,
+	handleMsgChange: PropTypes.func.isRequired
 };
 
 export default SearchingApp;

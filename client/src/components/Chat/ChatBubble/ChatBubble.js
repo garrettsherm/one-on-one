@@ -1,36 +1,41 @@
-import React, { Component } from 'react';
+/* src/components/Chat/ChatBubble/ChatBubble.js */
+
+/** Node Modules */
+import React from 'react';
 import PropTypes from 'prop-types';
 
+/** CSS */
 import './ChatBubble.css';
 
-class ChatBubble extends Component {
+/** Presenational Component for ChatBubbles */
+const ChatBubble = ({name, message, me}) => {
 
-	static propTypes = {
-		name: PropTypes.string.isRequired,
-		message: PropTypes.string.isRequired,
-		me: PropTypes.bool
-	};
+	// add class for me or opponent styling
+	const addClass = me ? 'message--me' : 'message--not-me';
 
-	render(){
+	// determine name to post for me or opponent
+	const postName = me ? 'me' : name;
 
-		const addClass = this.props.me ? 'message--me' : 'message--not-me';
-
-		const postName = this.props.me ? 'me' : this.props.name;
-
-		return(
-			<div className={`chat-bubble-container ${addClass}`}>
-				<div className="chat-bubble__name">
-					{postName}
-				</div>
+	return(
+		<div className={`chat-bubble-container ${addClass}`}>
+			<div className="chat-bubble__name">
+				<p>{postName}</p>
+			</div>
+			<div className="chat-bubble-flex">
 				<div className="chat-bubble__message">
 					<p>
-					{this.props.message}
+					{message}
 					</p>
 				</div>
 			</div>
-		);
-	}
-
+		</div>
+	);
 }
+
+ChatBubble.propTypes = {
+	name: PropTypes.string.isRequired,
+	message: PropTypes.string.isRequired,
+	me: PropTypes.bool
+};
 
 export default ChatBubble;

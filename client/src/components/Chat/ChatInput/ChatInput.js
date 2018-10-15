@@ -1,52 +1,43 @@
+/* src/components/Chat/ChatInput/ChatInput.js */
+
+/** Node Modules */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+/** Components */
+/*** buttons Components */
+import MainButton from '../../buttons/MainButton/MainButton';
+
+/** CSS */
 import './ChatInput.css';
+
 
 class ChatInput extends Component {
 
 	static propTypes = {
-		handleSendMsg: PropTypes.func.isRequired
-	};
-
-	state = {
-		newMsg: ''
-	};
-
-	handleMsgChange = (e) => {
-		this.setState({newMsg: e.target.value});
-	};
-
-	handleSendMsg = () => {
-		this.props.handleSendMsg(this.state.newMsg);
-		this.setState({newMsg: ''});
-	};
-
-	handleEnterPress = (e) => {
-		if(e.key === 'Enter'){
-			this.handleSendMsg();
-		}
+		handleSendMsg: PropTypes.func.isRequired,
+		handleMsgChange: PropTypes.func.isRequired,
+		msgValue: PropTypes.string.isRequired
 	};
 
 	render(){
 
 		const inputProps = {
 			type: 'text',
-			onChange: this.handleMsgChange,
+			onChange: this.props.handleMsgChange,
 			className: 'new__msg__input form-control',
 			name: 'newMsg',
-			value: this.state.newMsg,
-			onKeyPress: this.handleEnterPress
+			value: this.props.msgValue
 		}
 
 
 		return(
-			<div className="new__msg__container">
-				<button onClick={this.handleSendMsg} className="btn btn-primary">Send Message</button>
+			<form onSubmit={ (e) => this.props.handleSendMsg(e) } className='new__msg__container'>
+				<MainButton onClick={ (e) => this.props.handleSendMsg(e) } buttonText="Send Message" />
 				<div className="form-group">
 					<input {...inputProps} />
 				</div>
-			</div>
+			</form>
 		);
 	}
 

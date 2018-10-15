@@ -11,6 +11,8 @@ import Row from '../../wrappers/Row/Row';
 import VerticalCenter from '../../wrappers/VerticalCenter/VerticalCenter';
 /*** commons Components */
 import TitleText from '../../commons/TitleText/TitleText';
+/*** Searching Components */
+import SearchingInfo from '../SearchingInfo/SearchingInfo';
 
 /** CSS */
 import './SearchingApp.css';
@@ -21,12 +23,9 @@ const SearchingApp = ({count}) => (
 		<VerticalCenter>
 			<Container>
 				<Row>
-					<TitleText titleText="Searching for Someone to Chat With" center={true} styles={{color: '#ffffff'}}/>
-					<div className="col-md-6 offset-md-3 text-center searching-container__info">
-						<p><strong>{count}</strong> person searching for chat</p>
-						<p className="searching-container__info__hint">
-							<i>No one else online? Open this site in a new tab to test it out!</i>
-						</p>
+					<TitleText titleText="Searching..." center={true} styles={{color: '#ffffff'}}/>
+					<div className="col-md-8 offset-md-2 text-center">
+						<SearchingInfo count={count} />
 					</div>
 				</Row>
 			</Container>
