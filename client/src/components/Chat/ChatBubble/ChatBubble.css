@@ -20,7 +20,7 @@
 
 .message--me .chat-bubble__message {
 	background-color: #f0f0f0;
-	max-width: 350px;
+	max-width: 80%;
 	margin-left: auto;
 }
 

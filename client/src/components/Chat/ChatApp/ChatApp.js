@@ -30,7 +30,7 @@ const SearchingApp = ({msgList, oppName, msgValue, handleSendMsg, handleMsgChang
 
 			<Container>
 				<Row>
-					<TitleText titleText="One-on-One Chat" center={true} styles={{color: '#ffffff'}} />
+					<TitleText titleText="One-on-One Chat" center={true} styles={{color: '#ffffff', marginTop: '20px'}} />
 					<div className="col-md-12 text-center">
 						<p className="chat-with-text"><i>You are in chat with:</i></p>
 						<p className="chat-with-opp"><b>{oppName}</b></p>
